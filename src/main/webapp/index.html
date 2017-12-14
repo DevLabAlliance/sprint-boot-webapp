@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <title>YourApp</title>
+
+</head>
+<body>
+<h1> HELLO WORLD </h1>
+<input type="text" id="data"/>
+<a id="post" href="#">POST</a>
+<a id="get" href="#">GET</a>
+
+<div id="container"></div>
+</body>
+
+<script type="text/javascript" src="js/jquery-3.2.1.min.js"></script>
+<script type="text/javascript">
+    (function($) {
+        const loadData = function() {
+            $.ajax({
+                type: "GET",
+                cache: false,
+                url: '/data',
+                data: "",
+                success: function (response) {
+                    var html = "";
+                    $.each(response.data, function (i) {
+                        html = html + response.data[i] + "<br/>";
+                    });
+                    $('#container').html(html);
+                }
+            });
+        };
+
+        const sendData = function() {
+            $.ajax({
+                type: "POST",
+                cache: false,
+                url: '/data',
+                data: {
+                    'data': $("#data").val()
+                },
+                success: function (response) {
+                    loadData();
+                }
+            });
+        };
+
+        $('document').ready(function() {
+            $('#get').click(loadData);
+            $('#post').click(sendData);
+
+            loadData();
+        });
+    })(jQuery);
+</script>
+
+</html>
